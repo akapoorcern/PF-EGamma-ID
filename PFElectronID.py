@@ -11,17 +11,21 @@ import os
 ###### DNN Config ######
 initializer1='glorot_normal' 
 batch_size=5000
-epochs=200
+epochs=300
 ###### DNN Config ######
-
-plot_dir='plots/'
 
 loadnew = 0
 
 CommonSel='(ele_pt > 10) & (abs(scl_eta) < 1.442) & (abs(scl_eta) < 2.5)'
-CommonSelName="_HighpTBarrel_bHadOnly10_"
 
-pt_bins = [10,20,30,40,50,70,100,1000] #For robustness check
+CommonSelName="_HighpTBarrel_bHadOnly10pct_addedZprime_allxsec1"
+
+plot_dir='plots'+CommonSelName+'/'
+import os 
+os.system('mkdir '+plot_dir)
+#get_ipython().system('mkdir $plot_dir')
+
+pt_bins = [10,20,30,40,50,70,80,100,5000] #For robustness check
 eta_bins = [-1.566,-1.0, 0, 1.0,1.566]#For robustness check
 
 PromptSel='((matchedToGenEle == 1) | (matchedToGenEle == 2)) & (matchedToGenPhoton==0)'
@@ -34,11 +38,33 @@ PhoSel='(matchedToGenEle != 1) & (matchedToGenEle != 2) &  (matchedToHadron==0) 
 # In[2]:
 
 
-loca='./Ntuples_May2021/'
+loca='/scratch/PFNtuples_May2021/'
 
+'''
 processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_NEv_3943691_debug.root',
             'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8_N-112431.root',
+            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
 
+           {'path':loca+'QCD_Pt-15to20_bcToE_TuneCP5_13TeV_Run2_NEv_4316068_debug.root',
+            'xsecwt': 186200.0/4316068, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+         
+           {'path':loca+'QCD_Pt-20to30_bcToE_TuneCP5_13TeV_Run2_NEv_8694646_debug.root',
+            'xsecwt': 303800.0/8694646, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-30to80_bcToE_TuneCP5_13TeV_Run2_NEv_15177630_debug.root',
+            'xsecwt': 362300.0/15177630, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-80to170_bcToE_TuneCP5_13TeV_Run2_NEv_14934946_debug.root',
+            'xsecwt': 33700.0/14934946, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-170to250_bcToE_TuneCP5_13TeV_Run2_NEv_9096781_debug.root',
+            'xsecwt': 2125.0/9096781, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-250toInf_bcToE_TuneCP5_13TeV_Run2_NEv_10191317_debug.root',
+            'xsecwt': 562.5/10191317, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+            
            {'path':loca+'QCD_Pt-15to20_bcToE_TuneCP5_13TeV_Run2_NEv_4316068_debug.root',
             'xsecwt': 186200.0/4316068, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
          
@@ -84,6 +110,59 @@ processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_NE
            {'path':loca+'GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_10406345_debug.root',
             'xsecwt': 872.8/10406345, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
         ]
+'''
+
+processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_NEv_3943691_debug.root',
+            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8_N-112431.root',
+            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
+
+           {'path':loca+'QCD_Pt-15to20_bcToE_TuneCP5_13TeV_Run2_NEv_4316068_debug.root',
+            'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+         
+           {'path':loca+'QCD_Pt-20to30_bcToE_TuneCP5_13TeV_Run2_NEv_8694646_debug.root',
+            'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-30to80_bcToE_TuneCP5_13TeV_Run2_NEv_15177630_debug.root',
+            'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-80to170_bcToE_TuneCP5_13TeV_Run2_NEv_14934946_debug.root',
+            'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-170to250_bcToE_TuneCP5_13TeV_Run2_NEv_9096781_debug.root',
+            'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-250toInf_bcToE_TuneCP5_13TeV_Run2_NEv_10191317_debug.root',
+            'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
+ 
+           {'path':loca+'QCD_Pt-30to50_EMEnriched_Run3_NEv_20908_debug.root',
+            'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-50to80_EMEnriched_Run3_NEv_8142174_debug.root',
+            'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-80to120_EMEnriched_Run3_NEv_43913_debug.root',
+            'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-120to170_EMEnriched_Run3_NEv_83626_debug.root',
+            'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-170to300_EMEnriched_Run3_NEv_84196_debug.root',
+            'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'QCD_Pt-300toInf_EMEnriched_Run3_NEv_96365_debug.root',
+            'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'TauGun_Pt-15to500_14TeV-pythia8_NEv_440000_debug.root',
+            'xsecwt': 1, 'selection':hadtauSel, 'EleType':3, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_7869218_debug.root',
+            'xsecwt': 1, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_10406345_debug.root',
+            'xsecwt': 1, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
+        ]
 
 
 # In[3]:
@@ -110,7 +189,7 @@ branches=["scl_eta",
 features = ["ele_fbrem", "ele_deltaetain", "ele_deltaphiin", "ele_oldsigmaietaieta", 
             "ele_oldhe", "ele_ep", "ele_olde15", "ele_eelepout",
             "ele_kfchi2", "ele_kfhits", "ele_expected_inner_hits","ele_dr03TkSumPt",
-            "ele_dr03EcalRecHitSumEt","ele_dr03HcalTowerSumEt","ele_gsfchi2","scl_eta","ele_pt",
+            "ele_dr03EcalRecHitSumEt","ele_dr03HcalTowerSumEt","ele_gsfchi2","scl_eta",#"ele_pt",
             #'ele_conversionVertexFitProbability',
             'ele_nbrem','ele_deltaetaseed','ele_hadronicOverEm','ele_olde25max','ele_olde55']
 
@@ -171,8 +250,6 @@ fig.savefig(plot_dir+"pT_before_rwt.pdf")
 
 
 
-df["ele_pt_bin"] = pd.cut(df["ele_pt"], bins=pt_bins, labels=list(range(len(pt_bins)-1)))
-df["ele_eta_bin"] = pd.cut(df["scl_eta"], bins=eta_bins, labels=list(range(len(eta_bins)-1)))
 
 df.loc[df["EleType"] == 0, "IsSignal"] = 1
 df.loc[df["EleType"] == 1, "IsSignal"] = 1
@@ -198,10 +275,29 @@ for i,group_df in EB_train.groupby("ele_pt_bin"):
 for i,group_df in EB_test.groupby("ele_pt_bin"):
     for j,group_df2 in EB_test.groupby("EleType"):
         EB_test.loc[(EB_test["EleType"] == j) & (EB_test["ele_pt_bin"]==i), "NewWt"] = EB_test.loc[(EB_test["EleType"] == j) & (EB_test["ele_pt_bin"]==i), "xsecwt"] / (EB_test.loc[(EB_test["EleType"] == j) & (EB_test["ele_pt_bin"]==i), "xsecwt"].sum())
-'''        
+'''     
+
+EB_train["ele_pt_bin"] = pd.cut(EB_train["ele_pt"], bins=pt_bins, labels=list(range(len(pt_bins)-1)))
+EB_train["ele_eta_bin"] = pd.cut(EB_train["scl_eta"], bins=eta_bins, labels=list(range(len(eta_bins)-1)))
+
+EB_test["ele_pt_bin"] = pd.cut(EB_test["ele_pt"], bins=pt_bins, labels=list(range(len(pt_bins)-1)))
+EB_test["ele_eta_bin"] = pd.cut(EB_test["scl_eta"], bins=eta_bins, labels=list(range(len(eta_bins)-1)))
+
+
+for j,group_df2 in EB_train.groupby("EleType"):
+    EB_train.loc[(EB_train["EleType"] == j), "NewWt"] = EB_train.loc[(EB_train["EleType"] == j), "xsecwt"] / (EB_train.loc[(EB_train["EleType"] == j), "xsecwt"].sum())
+for j,group_df2 in EB_test.groupby("EleType"):
+    EB_test.loc[(EB_test["EleType"] == j), "NewWt"] = EB_test.loc[(EB_test["EleType"] == j), "xsecwt"] / (EB_test.loc[(EB_test["EleType"] == j), "xsecwt"].sum())   
 
 
 # In[9]:
+
+
+import Tools.effunc as effg
+effg.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins,label='$p_T$ (GeV)',title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
+
+
+# In[10]:
 
 
 fig, axes = plt.subplots(1, len(features), figsize=(100, 5))
@@ -226,7 +322,7 @@ for m in range(len(features)):
 fig.savefig(plot_dir+"Train_Features_After_reweighting.pdf")
 
 
-# In[10]:
+# In[11]:
 
 
 fig, ax = plt.subplots(1, 1, figsize=(5, 5))
@@ -240,7 +336,7 @@ for i,group_df in EB_train.groupby(cat):
 fig.savefig(plot_dir+"ele_pt_After_reweighting.pdf")
 
 
-# In[11]:
+# In[12]:
 
 
 from tensorflow.keras.utils import to_categorical, plot_model
@@ -258,7 +354,7 @@ y_train = to_categorical(y_train_o)
 y_test = to_categorical(y_test_o)
 
 
-# In[12]:
+# In[13]:
 
 
 NN=0
@@ -270,7 +366,7 @@ tf.random.set_seed(1)
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Reshape, Dropout, BatchNormalization
-from tensorflow.keras.optimizers import Adam, Nadam, Adadelta, Adagrad
+from tensorflow.keras.optimizers import Adam, Nadam, Adadelta, Adagrad, schedules
 
 if NN==1:
     model=Sequential()
@@ -299,47 +395,49 @@ if NN==0:
     #model.add(Dense(4*numfeatures, kernel_initializer=initializer1, activation='relu'))
     #model.add(Dense(4*numfeatures, kernel_initializer=initializer1, activation='relu'))
     model.add(Dense(4*numfeatures, kernel_initializer=initializer1, activation='relu'))
+    model.add(Dense(4*numfeatures, kernel_initializer=initializer1, activation='relu'))
     #model.add(Dense(2*numfeatures, kernel_initializer=initializer1, activation='relu'))
     model.add(Dense(2*numfeatures, kernel_initializer=initializer1, activation='relu'))
     model.add(Dense(numfeatures, kernel_initializer=initializer1, activation='relu'))
+    model.add(Dropout(0.1))
     model.add(Dense(10, kernel_initializer=initializer1, activation='relu'))
-    model.add(Dropout(0.2))
     model.add(Dense(len(df.EleType.unique()), kernel_initializer='glorot_uniform', activation='softmax'))
 
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=10)
+    
+    lr_schedule = schedules.ExponentialDecay(initial_learning_rate=1e-3,decay_steps=10000,decay_rate=0.9)
+    
+    model.compile(loss='categorical_crossentropy', optimizer=Adam(learning_rate=lr_schedule), metrics=['accuracy',])
 
-    model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=0.001), metrics=['accuracy',])
 
-
-# In[13]:
+# In[ ]:
 
 
 history = model.fit(X_train,y_train,validation_data=(X_test,y_test,Wt_test),epochs=epochs,batch_size=batch_size,shuffle=True,sample_weight=Wt_train,callbacks=[es])
 
 
-# In[14]:
+# In[ ]:
 
 
 model.save(plot_dir+'my_model.h5')
-
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train', 'val'], loc='upper left')
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.plot(history.history['loss'])
+ax.plot(history.history['val_loss'])
+ax.set_title('model loss')
+ax.set_ylabel('loss')
+ax.set_xlabel('epoch')
+ax.legend(['train', 'val'], loc='upper left')
 fig.savefig(plot_dir+"loss.pdf")
-#plt.show()
 
 
-# In[15]:
+# In[ ]:
 
 
-y_train_pred=np.array(model.predict(X_train))
-y_test_pred=np.array(model.predict(X_test))
+y_train_pred=np.array(model.predict(X_train,batch_size=batch_size))
+y_test_pred=np.array(model.predict(X_test,batch_size=batch_size))
 
 
-# In[16]:
+# In[ ]:
 
 
 from sklearn.metrics import roc_curve, auc
@@ -410,12 +508,11 @@ for i in range(n_classes):
     #ax.set_yscale("log", nonposy='clip')
     ax.legend(loc="upper left",fontsize=10)
     axMVA.legend(loc="upper right",fontsize=10)
-#plt.show()
 fig.savefig(plot_dir+"ROC.pdf")
 figMVA.savefig(plot_dir+"MVA.pdf")
 
 
-# In[17]:
+# In[ ]:
 
 
 figMVA_One, axesMVA_One = plt.subplots(1, 1, figsize=(5, 5))
@@ -444,11 +541,11 @@ axesMVA_One.hist([np.sum([y_train_pred[:, 0][y_train[:, 0]==1],y_train_pred[:, 1
                           Wt_train[y_train[:, 3]==1]/np.sum(Wt_train[y_train[:, 3]==1]),
                           Wt_train[y_train[:, 4]==1]/np.sum(Wt_train[y_train[:, 4]==1])],alpha=0.2,histtype='stepfilled',linewidth=1,color=['#377eb8', '#ff7f00', '#4daf4a','#f781bf', '#a65628'])
 axesMVA_One.legend(loc="center")
-axesMVA_One.set_ylim(0,0.8)
+axesMVA_One.set_ylim(0,1.0)
 figMVA_One.savefig(plot_dir+"ROC_sum12.pdf")
 
 
-# In[18]:
+# In[ ]:
 
 
 EB_test["scoreSum12DNN"] = np.sum([y_test_pred[:, 0],y_test_pred[:, 1]],axis=0)
@@ -481,11 +578,11 @@ EB_test['scoreSum12DNN'].corr(EB_test['ele_pt'])
 
 
 
-# In[19]:
+# In[ ]:
 
 
-#del sys.modules["eff"]
-import Tools.eff as eff
+import Tools.effunc as effg
+
 EB_test["scoreSum12DNN"] = np.sum([y_test_pred[:, 0],y_test_pred[:, 1]],axis=0)
 EB_train["scoreSum12DNN"] = np.sum([y_train_pred[:, 0],y_train_pred[:, 1]],axis=0)
 
@@ -498,14 +595,14 @@ EB_train.loc[EB_train["scoreSum12DNN"] > mydf.iat[1,0], "scoreSum12DNNpass95"] =
 EB_train.loc[EB_train["scoreSum12DNN"] < mydf.iat[1,0], "scoreSum12DNNpass95"] = 0
 
 
-eff.EffTrend(cat='IsSignal',var='scoreSum12DNNpass',Wt='NewWt',groupbyvar='ele_pt_bin',label='ptbin',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Val="+str(mydf.iat[0,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins,label='$p_T$ (GeV)',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Val="+str(mydf.iat[0,0])+".pdf",df=EB_train,plot_dir=plot_dir)
 
-eff.EffTrend(cat='IsSignal',var='scoreSum12DNNpass95',Wt='NewWt',groupbyvar='ele_pt_bin',label='ptbin',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Val95="+str(mydf.iat[1,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass95',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins,label='$p_T$ (GeV)',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Val95="+str(mydf.iat[1,0])+".pdf",df=EB_train,plot_dir=plot_dir)
 
-eff.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_pt_bin',label='ptbin',title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
+effg.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins, label='$p_T$ (GeV)',title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
 
 
-# In[20]:
+# In[ ]:
 
 
 ax=plt.gca()
@@ -516,7 +613,7 @@ plt.savefig(plot_dir+"TrainStat.pdf")
 ax.set_title("Training Stat for each process")
 
 
-# In[21]:
+# In[ ]:
 
 
 ax=plt.gca()
@@ -527,48 +624,132 @@ plt.savefig(plot_dir+"TestStat.pdf")
 ax.set_title("Testing Stat for each process")
 
 
-# In[22]:
+# In[ ]:
 
 
-eff.EffTrend(cat='IsSignal',var='scoreSum12DNNpass',Wt='NewWt',groupbyvar='ele_eta_bin',label='etabin',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_etabin_Val="+str(mydf.iat[0,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass',Wt='NewWt',groupbyvar='ele_eta_bin',label='eta',ptbins=eta_bins,title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_etabin_Val="+str(mydf.iat[0,0])+".pdf",df=EB_train,plot_dir=plot_dir)
 
-eff.EffTrend(cat='IsSignal',var='scoreSum12DNNpass95',Wt='NewWt',groupbyvar='ele_eta_bin',label='etabin',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_etabin_Val95="+str(mydf.iat[1,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass95',Wt='NewWt',groupbyvar='ele_eta_bin',label='eta',ptbins=eta_bins,title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_etabin_Val95="+str(mydf.iat[1,0])+".pdf",df=EB_train,plot_dir=plot_dir)
 
-eff.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_eta_bin',label='etabin',title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
-
-
-# In[23]:
+effg.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_eta_bin',label='eta',ptbins=eta_bins,title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
 
 
-EB_test["scoremax12DNN"] = np.max([y_test_pred[:, 0],y_test_pred[:, 1]],axis=0)
+# In[ ]:
 
 
-# In[98]:
 
 
-EB_train["scoremax12DNN"] = np.max([y_train_pred[:, 0],y_train_pred[:, 1]],axis=0)
+
+# In[ ]:
 
 
-# In[24]:
 
 
-EB_test["scoremax12DNN"] = np.max([y_test_pred[:, 0],y_test_pred[:, 1]],axis=0)
-EB_train["scoremax12DNN"] = np.max([y_train_pred[:, 0],y_train_pred[:, 1]],axis=0)
 
-mydf=EB_train.query("IsSignal==1")[['scoremax12DNN']].quantile([1-0.98,1-0.95])
-
-EB_train.loc[EB_train["scoremax12DNN"] > mydf.iat[0,0], "scoremax12DNNpass"] = 1
-EB_train.loc[EB_train["scoremax12DNN"] < mydf.iat[0,0], "scoremax12DNNpass"] = 0
-
-EB_train.loc[EB_train["scoremax12DNN"] > mydf.iat[1,0], "scoremax12DNNpass95"] = 1
-EB_train.loc[EB_train["scoremax12DNN"] < mydf.iat[1,0], "scoremax12DNNpass95"] = 0
+# In[ ]:
 
 
-eff.EffTrend(cat='IsSignal',var='scoremax12DNNpass',Wt='NewWt',groupbyvar='ele_pt_bin',label='ptbin',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Max_Val="+str(mydf.iat[0,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+mydf=EB_train.query("IsSignal==1")[['scoreSum12DNN']].quantile([1-0.995,1-0.99])
 
-eff.EffTrend(cat='IsSignal',var='scoremax12DNNpass95',Wt='NewWt',groupbyvar='ele_pt_bin',label='ptbin',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Max_Val95="+str(mydf.iat[1,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+EB_train.loc[EB_train["scoreSum12DNN"] > mydf.iat[0,0], "scoreSum12DNNpass995"] = 1
+EB_train.loc[EB_train["scoreSum12DNN"] < mydf.iat[0,0], "scoreSum12DNNpass995"] = 0
 
-eff.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_pt_bin',label='ptbin',title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
+EB_train.loc[EB_train["scoreSum12DNN"] > mydf.iat[1,0], "scoreSum12DNNpass99"] = 1
+EB_train.loc[EB_train["scoreSum12DNN"] < mydf.iat[1,0], "scoreSum12DNNpass99"] = 0
+
+effg.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins,label='$p_T$ (GeV)',title='CMSSW_PF_Ele_ID',plotname="CMSSW_PF_Ele_ID.pdf",df=EB_train,plot_dir=plot_dir)
+
+effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass995',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins,label='$p_T$ (GeV)',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Val995="+str(mydf.iat[0,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+
+effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass99',Wt='NewWt',groupbyvar='ele_pt_bin',ptbins=pt_bins,label='$p_T$ (GeV)',title="New MultiClass PF Ele ID",plotname="New_MultiClass_PF_Ele_ID_Val99="+str(mydf.iat[1,0])+".pdf",df=EB_train,plot_dir=plot_dir)
+
+
+# In[ ]:
+
+
+import shap
+
+shap.initjs()
+
+background = X_train[np.random.choice(X_train.shape[0], 1000, replace=False)]
+
+# explain predictions of the model on three images
+e = shap.DeepExplainer(model, background)
+# ...or pass tensors directly
+# e = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
+shap_values = e.shap_values(X_test[:5000])
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+shap.summary_plot(shap_values, X_test, plot_type="bar",feature_names=features)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
