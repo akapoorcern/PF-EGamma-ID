@@ -1,5 +1,8 @@
 import pandas as pd
-import uproot3 as uproot
+try:
+    import uproot as uproot
+except ImportError:
+    import uproot3 as uproot
 from dask import delayed
 import dask.dataframe as dd
 import gc

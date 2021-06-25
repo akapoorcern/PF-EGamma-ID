@@ -11,14 +11,14 @@ import os
 ###### DNN Config ######
 initializer1='glorot_normal' 
 batch_size=1000
-epochs=300
+epochs=3
 ###### DNN Config ######
 
 loadnew = 0
 
 CommonSel='(ele_pt > 10) & (abs(scl_eta) < 1.442) & (abs(scl_eta) < 2.5)'
 
-CommonSelName="_HighpTBarrel_bHadOnly10pct_addedZprime_allxsec1"
+CommonSelName="_HighpTBarrel_bHadOnly10pct_newJune2021Flag_allxsec1_lxp"
 
 plot_dir='plots'+CommonSelName+'/'
 import os 
@@ -37,130 +37,96 @@ PhoSel='(matchedToGenEle != 1) & (matchedToGenEle != 2) &  (matchedToHadron==0) 
 
 # In[2]:
 
-
-loca='/scratch/PFNtuples_May2021/'
-
 '''
-processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_NEv_3943691_debug.root',
-            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8_N-112431.root',
-            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
-
-           {'path':loca+'QCD_Pt-15to20_bcToE_TuneCP5_13TeV_Run2_NEv_4316068_debug.root',
-            'xsecwt': 186200.0/4316068, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-         
-           {'path':loca+'QCD_Pt-20to30_bcToE_TuneCP5_13TeV_Run2_NEv_8694646_debug.root',
-            'xsecwt': 303800.0/8694646, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-30to80_bcToE_TuneCP5_13TeV_Run2_NEv_15177630_debug.root',
-            'xsecwt': 362300.0/15177630, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-80to170_bcToE_TuneCP5_13TeV_Run2_NEv_14934946_debug.root',
-            'xsecwt': 33700.0/14934946, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-170to250_bcToE_TuneCP5_13TeV_Run2_NEv_9096781_debug.root',
-            'xsecwt': 2125.0/9096781, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-250toInf_bcToE_TuneCP5_13TeV_Run2_NEv_10191317_debug.root',
-            'xsecwt': 562.5/10191317, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-            
-           {'path':loca+'QCD_Pt-15to20_bcToE_TuneCP5_13TeV_Run2_NEv_4316068_debug.root',
-            'xsecwt': 186200.0/4316068, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-         
-           {'path':loca+'QCD_Pt-20to30_bcToE_TuneCP5_13TeV_Run2_NEv_8694646_debug.root',
-            'xsecwt': 303800.0/8694646, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-30to80_bcToE_TuneCP5_13TeV_Run2_NEv_15177630_debug.root',
-            'xsecwt': 362300.0/15177630, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-80to170_bcToE_TuneCP5_13TeV_Run2_NEv_14934946_debug.root',
-            'xsecwt': 33700.0/14934946, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-170to250_bcToE_TuneCP5_13TeV_Run2_NEv_9096781_debug.root',
-            'xsecwt': 2125.0/9096781, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-250toInf_bcToE_TuneCP5_13TeV_Run2_NEv_10191317_debug.root',
-            'xsecwt': 562.5/10191317, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-30to50_EMEnriched_Run3_NEv_20908_debug.root',
-            'xsecwt': 6396000.0/20908, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-50to80_EMEnriched_Run3_NEv_8142174_debug.root',
-            'xsecwt': 1989000.0/8142174, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-80to120_EMEnriched_Run3_NEv_43913_debug.root',
-            'xsecwt': 366500.0/43913, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-120to170_EMEnriched_Run3_NEv_83626_debug.root',
-            'xsecwt': 66490.0/83626, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-170to300_EMEnriched_Run3_NEv_84196_debug.root',
-            'xsecwt': 16480.0/84196, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'QCD_Pt-300toInf_EMEnriched_Run3_NEv_96365_debug.root',
-            'xsecwt': 1099.0/96365, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'TauGun_Pt-15to500_14TeV-pythia8_NEv_440000_debug.root',
-            'xsecwt': 1, 'selection':hadtauSel, 'EleType':3, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_7869218_debug.root',
-            'xsecwt': 232.8/7869218, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_10406345_debug.root',
-            'xsecwt': 872.8/10406345, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
-        ]
+DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8/crab_DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag_ondisknow/210625_041036/0000/finaloutput_1_6_.root
+DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8/crab_DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag_ondisknow/210625_041036/0000/finaloutput_1_6.root
+DYToEE_M-50_NNPDF31_TuneCP5_14TeV-powheg-pythia8/crab_DYToEE_M-50_NNPDF31_TuneCP5_14TeV-powheg-pythia8_June2021newflag/210624_214333/0000/finaloutput_1_2_3_4_.root
+GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8/crab_GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_June2021newflag/210624_214346/0000/finaloutput_1_2_3_.root
+GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_14TeV_Pythia8/crab_GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_14TeV_Pythia8_June2021newflag/210624_214352/0000/finaloutput_.root
+GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8/crab_GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_June2021newflag/210624_214359/0000/finaloutput_.root
+Muplusandminus_E1-10-gun/crab_Muplusandminus_E1-10-gun-2021ScenarioForMUO_June2021newflag/210625_043820/0000/finaloutput_.root
+QCD_Pt-120to170_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-120to170_EMEnriched_TuneCP5_14TeV_pythia8/210216_002843/0000/finaloutput_.root
+QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220404/0000/finaloutput_.root
+QCD_Pt_15to7000_TuneCP5_Flat_14TeV_pythia8/crab_QCD_Pt-15to7000_TuneCP5_Flat_14TeV_pythia8_June2021newflag/210624_220023/0000/finaloutput_.root
+QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220410/0000/finaloutput_.root
+QCD_Pt-170to300_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-170to300_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214254/0000/finaloutput_.root
+QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220418/0000/finaloutput_.root
+QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220425/0000/finaloutput_.root
+QCD_Pt-300toInf_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-300toInf_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214300/0000/finaloutput_.root
+QCD_Pt-30to50_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-30to50_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag_ondisknow/210625_041029/0000/finaloutput_.root
+QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220431/0000/finaloutput_.root
+QCD_Pt-50to80_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-50to80_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214313/0000/finaloutput_.root
+QCD_Pt-80to120_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-80to120_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214319/0000/finaloutput_.root
+QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220438/0000/finaloutput_.root
+TauGun_Pt-15to500_14TeV-pythia8/crab_TauGun_Pt-15to500_14TeV-pythia8_June2021newflag/210624_214339/0000/finaloutput_.root
+TTToHadronic_TuneCP5_14TeV-powheg-pythia8/crab_TTToHadronic_TuneCP5_14TeV-powheg-pythia8_June2021newflag/210625_043610/0000/finaloutput_.root
+ZprimeToTT_M3000_W30_TuneCP5_14TeV-madgraphMLM-pythia8/crab_ZprimeToTT_M3000_W30_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag/210624_214235/0000/finaloutput_.root
+ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8/crab_ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag/210624_214241/0000/finaloutput_.root
+ lxplus781:~/cernbox/SWAN_projects/June2021newflag_PFFiles$ pwd
+/afs/cern.ch/user/a/akapoor/cernbox/SWAN_projects/June2021newflag_PFFiles
 '''
 
-processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_NEv_3943691_debug.root',
-            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
-           
-           {'path':loca+'ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8_N-112431.root',
+
+loca='/eos/user/a/akapoor/SWAN_projects/June2021newflag_PFFiles/'
+
+processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8/crab_DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag_ondisknow/210625_041036/0000/finaloutput_1_6_.root',
             'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
 
-           {'path':loca+'QCD_Pt-15to20_bcToE_TuneCP5_13TeV_Run2_NEv_4316068_debug.root',
+           {'path':loca+'DYToEE_M-50_NNPDF31_TuneCP5_14TeV-powheg-pythia8/crab_DYToEE_M-50_NNPDF31_TuneCP5_14TeV-powheg-pythia8_June2021newflag/210624_214333/0000/finaloutput_1_2_3_4_.root',
+            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8/crab_ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag/210624_214241/0000/finaloutput_.root',
+            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
+
+           {'path':loca+'ZprimeToTT_M3000_W30_TuneCP5_14TeV-madgraphMLM-pythia8/crab_ZprimeToTT_M3000_W30_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag/210624_214235/0000/finaloutput_.root',
+            'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
+
+           {'path':loca+'QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_15to20_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220404/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
          
-           {'path':loca+'QCD_Pt-20to30_bcToE_TuneCP5_13TeV_Run2_NEv_8694646_debug.root',
+           {'path':loca+'QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_20to30_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220418/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-30to80_bcToE_TuneCP5_13TeV_Run2_NEv_15177630_debug.root',
+           {'path':loca+'QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_30to80_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220431/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-80to170_bcToE_TuneCP5_13TeV_Run2_NEv_14934946_debug.root',
+           {'path':loca+'QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_80to170_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220438/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-170to250_bcToE_TuneCP5_13TeV_Run2_NEv_9096781_debug.root',
+           {'path':loca+'QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_170to250_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220410/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-250toInf_bcToE_TuneCP5_13TeV_Run2_NEv_10191317_debug.root',
+           {'path':loca+'QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8/crab_QCD_Pt_250toInf_bcToE_TuneCP5_13TeV_pythia8_June2021newflag/210624_220425/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':bHadSel, 'EleType':1, 'CommonSelection':CommonSel},
  
-           {'path':loca+'QCD_Pt-30to50_EMEnriched_Run3_NEv_20908_debug.root',
+           {'path':loca+'QCD_Pt-30to50_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-30to50_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag_ondisknow/210625_041029/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-50to80_EMEnriched_Run3_NEv_8142174_debug.root',
+           {'path':loca+'QCD_Pt-50to80_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-50to80_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214313/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-80to120_EMEnriched_Run3_NEv_43913_debug.root',
+           {'path':loca+'QCD_Pt-80to120_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-80to120_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214319/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-120to170_EMEnriched_Run3_NEv_83626_debug.root',
+           {'path':loca+'QCD_Pt-120to170_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-120to170_EMEnriched_TuneCP5_14TeV_pythia8/210216_002843/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-170to300_EMEnriched_Run3_NEv_84196_debug.root',
+           {'path':loca+'QCD_Pt-170to300_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-170to300_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214254/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
            
-           {'path':loca+'QCD_Pt-300toInf_EMEnriched_Run3_NEv_96365_debug.root',
+           {'path':loca+'QCD_Pt-300toInf_EMEnriched_TuneCP5_14TeV_pythia8/crab_QCD_Pt-300toInf_EMEnriched_TuneCP5_14TeV_pythia8_June2021newflag/210624_214300/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':QCDSel, 'EleType':2, 'CommonSelection':CommonSel},
            
-           {'path':loca+'TauGun_Pt-15to500_14TeV-pythia8_NEv_440000_debug.root',
+           {'path':loca+'TauGun_Pt-15to500_14TeV-pythia8/crab_TauGun_Pt-15to500_14TeV-pythia8_June2021newflag/210624_214339/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':hadtauSel, 'EleType':3, 'CommonSelection':CommonSel},
            
-           {'path':loca+'GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_7869218_debug.root',
+           {'path':loca+'GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_14TeV_Pythia8/crab_GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_14TeV_Pythia8_June2021newflag/210624_214352/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
            
-           {'path':loca+'GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_NEv_10406345_debug.root',
+           {'path':loca+'GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8/crab_GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_June2021newflag/210624_214346/0000/finaloutput_1_2_3_.root',
+            'xsecwt': 1, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
+           
+           {'path':loca+'GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8/crab_GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_14TeV_Pythia8_June2021newflag/210624_214359/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':PhoSel, 'EleType':4, 'CommonSelection':CommonSel},
         ]
 
@@ -368,7 +334,10 @@ NN=0
 
 import tensorflow as tf
 tf.compat.v1.disable_eager_execution()
-tf.random.set_seed(1)
+try:
+    tf.random.set_seed(1)
+except AttributeError:
+    tf.random.set_random_seed(1)
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Reshape, Dropout, BatchNormalization
@@ -673,41 +642,41 @@ effg.EffTrend(cat='IsSignal',var='scoreSum12DNNpass99',Wt='NewWt',groupbyvar='el
 # In[25]:
 
 
-import shap
+# import shap
 
-shap.initjs()
+# shap.initjs()
 
-background = X_train[np.random.choice(X_train.shape[0], 1000, replace=False)]
+# background = X_train[np.random.choice(X_train.shape[0], 1000, replace=False)]
 
-# explain predictions of the model on three images
-e = shap.DeepExplainer(model, background)
-# ...or pass tensors directly
-# e = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
-shap_values = e.shap_values(X_test[:5000])
-
-
-# In[ ]:
+# # explain predictions of the model on three images
+# e = shap.DeepExplainer(model, background)
+# # ...or pass tensors directly
+# # e = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
+# shap_values = e.shap_values(X_test[:5000])
 
 
-
-
-
-# In[ ]:
+# # In[ ]:
 
 
 
 
 
-# In[ ]:
+# # In[ ]:
 
 
 
 
 
-# In[26]:
+# # In[ ]:
 
 
-shap.summary_plot(shap_values, X_test, plot_type="bar",feature_names=features)
+
+
+
+# # In[26]:
+
+
+# shap.summary_plot(shap_values, X_test, plot_type="bar",feature_names=features)
 
 
 # In[ ]:
