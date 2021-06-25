@@ -11,14 +11,15 @@ import os
 ###### DNN Config ######
 initializer1='glorot_normal' 
 batch_size=1000
-epochs=3
+epochs=1
 ###### DNN Config ######
 
 loadnew = 0
 
 CommonSel='(ele_pt > 10) & (abs(scl_eta) < 1.442) & (abs(scl_eta) < 2.5)'
+#CommonSel='(ele_pt > 10) & (abs(scl_eta) < 1.442) & (abs(scl_eta) < 2.5)'
 
-CommonSelName="_HighpTBarrel_bHadOnly10pct_newJune2021Flag_allxsec1_lxp"
+CommonSelName="_HighpTBarrel_bHadOnly10pct_newJune2021Flag_allxsec1_rog"
 
 plot_dir='plots'+CommonSelName+'/'
 import os 
@@ -67,9 +68,9 @@ ZprimeToTT_M4000_W40_TuneCP5_14TeV-madgraphMLM-pythia8/crab_ZprimeToTT_M4000_W40
 '''
 
 
-loca='/eos/user/a/akapoor/SWAN_projects/June2021newflag_PFFiles/'
+loca='/scratch/PFNtuples_June2021/'
 
-processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8/crab_DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag_ondisknow/210625_041036/0000/finaloutput_1_6_.root',
+processes=[{'path':loca+'DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8/crab_DYJets_incl_MLL-50_TuneCP5_14TeV-madgraphMLM-pythia8_June2021newflag_ondisknow/210625_041036/0000/finaloutput_.root',
             'xsecwt': 1, 'selection':PromptSel, 'EleType':0, 'CommonSelection':CommonSel},
 
            {'path':loca+'DYToEE_M-50_NNPDF31_TuneCP5_14TeV-powheg-pythia8/crab_DYToEE_M-50_NNPDF31_TuneCP5_14TeV-powheg-pythia8_June2021newflag/210624_214333/0000/finaloutput_1_2_3_4_.root',
@@ -232,6 +233,8 @@ from sklearn.model_selection import train_test_split
 
 EB_train, EB_test = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
 
+
+
 '''
 for i,group_df in EB_train.groupby("ele_pt_bin"):
     for j,group_df2 in EB_train.groupby("EleType"):
@@ -256,6 +259,24 @@ for j,group_df2 in EB_test.groupby("EleType"):
     EB_test.loc[(EB_test["EleType"] == j), "NewWt"] = EB_test.loc[(EB_test["EleType"] == j), "xsecwt"] / (EB_test.loc[(EB_test["EleType"] == j), "xsecwt"].sum())   
 '''    
 
+fig, ax = plt.subplots(1,1,figsize=(5, 5))
+#ax=plt.gca()
+EB_train.groupby(['EleType']).size().plot(kind = "bar",ax=ax)
+ax.set_xticklabels(labels=["DY",'bHad',"QCD","Tau","GJet"],ha='center')
+ax.set_xlabel("Process")
+ax.set_title("Training Stat for each process")
+plt.savefig(plot_dir+"TrainStat.pdf")
+
+
+# In[22]:
+
+#fig, axes = plt.subplots(1, 1))
+fig, ax = plt.subplots(1,1,figsize=(5, 5))
+EB_test.groupby(['EleType']).size().plot(kind = "bar",ax=ax)
+ax.set_xticklabels(labels=["DY",'bHad',"QCD","Tau","GJet"],ha='center')
+ax.set_xlabel("Process")
+ax.set_title("Testing Stat for each process")
+plt.savefig(plot_dir+"TestStat.pdf")
 
 # In[9]:
 
@@ -580,23 +601,6 @@ effg.EffTrend(cat='IsSignal',var='passElectronSelection',Wt='NewWt',groupbyvar='
 # In[21]:
 
 
-ax=plt.gca()
-EB_train.groupby(['EleType']).size().plot(kind = "bar",ax=ax)
-ax.set_xticklabels(labels=["DY",'bHad',"QCD","Tau","GJet"],ha='center')
-ax.set_xlabel("Process")
-plt.savefig(plot_dir+"TrainStat.pdf")
-ax.set_title("Training Stat for each process")
-
-
-# In[22]:
-
-
-ax=plt.gca()
-EB_test.groupby(['EleType']).size().plot(kind = "bar",ax=ax)
-ax.set_xticklabels(labels=["DY",'bHad',"QCD","Tau","GJet"],ha='center')
-ax.set_xlabel("Process")
-plt.savefig(plot_dir+"TestStat.pdf")
-ax.set_title("Testing Stat for each process")
 
 
 # In[23]:
